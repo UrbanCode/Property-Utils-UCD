@@ -1,15 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
-- Licensed Materials - Property of IBM Corp.
-- IBM UrbanCode Build
-- IBM UrbanCode Deploy
-- IBM UrbanCode Release
-- IBM AnthillPro
-- (c) Copyright IBM Corporation 2002, 2013. All Rights Reserved.
--
-- U.S. Government Users Restricted Rights - Use, duplication or disclosure restricted by
-- GSA ADP Schedule Contract with IBM Corp.
--->
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <pluginInfo>
   <!--
   
@@ -44,7 +33,7 @@
   the Type would be "Deploy"
   -->
   
-  <integration type="automation"/>
+  <integration type=""/>
   
   
   <!-- 
@@ -54,20 +43,20 @@
   For example 
   https://github.com/...
   -->
-  
+  <!--
   <source url=""/>
-  
+  -->
   <!-- 
   **license type is NOT required**
   
   If your plugin uses any licensed software please acknowledge it by 
   listing the license type below  
   -->
-  
+  <!--
   <licenses>
     <license type=""/>
   </licenses>
-  
+  -->
   <!-- 
   **tool-description IS required**
   
@@ -81,8 +70,7 @@
   called to execute the targets in the build.xml.
   -->
   
-  <tool-description>
- Developed by UrbanCode, The TextUtil plugin provides text manipulation functionality.</tool-description>
+  <tool-description>A plugin to export properties from uDeploy</tool-description>
   
   <!-- 
   **related-info is NOT required**
@@ -95,7 +83,11 @@
   
   excepted values for type include: PDF, WEBSITE, VIDEO  
   -->
-
+  <!--
+  <related-info>
+    <link title="" type="" description="" url =""/>
+  </related-info>
+  -->
   <!-- 
   **meta-html in NOT required**
   
@@ -113,8 +105,7 @@
   </meta-html>
     
   <!-- Do not change the release-version, the build process injects it. -->
-  <release-version>1</release-version>
-    
+  <release-version>8.00</release-version>
     
   <release-notes>
     <!--
@@ -131,18 +122,34 @@
       Support for was added for version 10.0 for software X
       or 
       releaseNotes/release1.html (where release1.html contains html formatted version information)
-      
-      To add a new release note add this with a description in it of the changes:
-      <release-note plugin-version="10">....</release-note>
-      
-      Our automated release process will replace 'LATEST' with the released version.
-      
-      If this already exists in the file, then the described changes have not been released yet and
-      you should just append to the existing 'LATEST' tag.
       -->
       
-    <release-note plugin-version="1">
-      Installing this plugin will give you access to the steps listed below. These steps can be used when designing a component process.
-    </release-note>
+	  <release-note plugin-version="1">
+		Step to export resource properties from uDeploy
+	  </release-note>
+	  <release-note plugin-version="2">
+		Update export resource properties from uDeploy
+	  </release-note>
+	  <release-note plugin-version="3">
+		Added new step to retrieve properties from property file
+	  </release-note>
+	  <release-note plugin-version="4">
+		Added new step to build a property file
+	  </release-note>
+	  <release-note plugin-version="5">
+		Renamed step to export resource properties from uDeploy
+	  </release-note>
+	  <release-note plugin-version="5">
+		Updated step to export resource properties from uDeploy
+	  </release-note>
+	  <release-note plugin-version="6">
+		Updated step to export resource properties from uDeploy
+	  </release-note>	  
+	  <release-note plugin-version="7">
+		Added new step to retrieve all properties from property file
+	  </release-note>
+	  <release-note plugin-version="8">
+		Updated step to build a property file
+	  </release-note>	  
   </release-notes>
 </pluginInfo>

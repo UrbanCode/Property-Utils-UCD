@@ -1,29 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<plugin xmlns="http://www.urbancode.com/PluginXMLSchema_v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<plugin xmlns="http://www.urbancode.com/PluginXMLSchema_v1" 
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <header>
-    <identifier id="com.urbancode.air.plugin.TextUtils" name="TextUtils" version="2"/>
-    <description>The TextUtils plugin provides functionality to manipulate text within files.</description>
-    <tag>Utilities/TextUtils</tag>
+    <identifier id="com.urbancode.air.plugin.PropertyTools" name="Property Tools" version="8"/>
+    <description>
+		The Property Tools plugin is an automation based plugin that provides steps for collecting Urban Code properties.
+	</description>
+    <tag>Resource Tools/Property Tools</tag>
   </header>
-  <step-type name="Search and Replace">
-    <description>Search for a string, replace it with another and write to the file.</description>
+  
+  <!-- ==================================== -->
+  <!--   Export Properties From UCD		    -->
+  <!-- ==================================== -->  
+  <step-type name="Export Properties From UCD">
+    <description>Export Properties From UCD</description>
     <properties>
-      <property name="filePath" required="true">
-        <property-ui type="textBox"
-                     label="File path"
-                     description="The full path to the text file to be edited."/>
-      </property>
-	  <property name="searchString" required="true">
-        <property-ui type="textAreaBox"
-                     label="Search string"
-                     description="The string that the plugin will search for."/>
-      </property>
-	  <property name="replacementString" required="true">
-        <property-ui type="textAreaBox"
-                     label="Replacement string"
-                     description="The string that the plugin will replace all occurances of the search string with."/>
-	  </property>
-    </properties>
+		<property name="application" required="true">
+			<property-ui type="textBox"
+						 label="Application"
+						 description="The application to export properties from.  All environment and resource properties under the application will be exported."/>
+		</property>			
+		<property name="exportLocation" required="true">
+			<property-ui type="textBox"
+						 label="Export Location"
+						 description="The path to export the property files to."/>
+		</property>
+		<property name="ucdhost">
+			<property-ui type="textBox" 
+						 default-value="${p?:resource/ucd.host}" 
+						 label="UCD Host"
+						 description="Hostname of the UCD server to connect to." 
+						 hidden="true"/>
+		</property>
+		<property name="ucdport">
+			<property-ui type="textBox" 
+						 default-value="${p?:resource/ucd.port}" 
+						 label="UCD Port"
+						 description="Port number of the UCD server to connect to." 
+						 hidden="true"/>
+		</property>	
+		<property name="ucdusername">
+			<property-ui type="textBox" 
+						 default-value="${p?:resource/ucd.username}" 
+						 label="UCD Username"
+						 description="User name for connection to UCD server." 
+						 hidden="true"/>
+		</property>
+		<property name="ucdpassword">
+			<property-ui type="secureBox" 
+						 default-value="${p?:resource/ucd.password}" 
+						 label="UCD Password"
+						 description="Password for connection to UCD server." 
+						 hidden="true"/>
+		</property>			
+	</properties>
     <post-processing><![CDATA[
         if (properties.get("exitCode") != 0) {
             properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
@@ -34,31 +64,42 @@
      ]]></post-processing>
     <command program="${GROOVY_HOME}/bin/groovy">
       <arg value="-cp"/>
-      <arg path="classes"/>
-      <arg file="search_and_replace.groovy"/>
-      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg path="classes:lib/CommonsUtil.jar:lib/http-builder-0.7.2.jar:lib/httpcore-4.3.2.jar:lib/httpclient-4.2.5.jar:lib/json-lib.jar:lib/apache-collections-commons-collections-3.1.jar:lib/xml-resolver-1.2.jar"/>
+      <arg file="export_properties_from_ucd.groovy"/>
+	  <arg file="${PLUGIN_INPUT_PROPS}"/>
       <arg file="${PLUGIN_OUTPUT_PROPS}"/>
     </command>
   </step-type>
-  <step-type name="Search and Replace with Regex">
-    <description>Search for a string with regular expressions, replace it with another and write to the file.</description>
+
+  <!-- ==================================== -->
+  <!--   Build Property File     		    -->
+  <!-- ==================================== -->  
+  <step-type name="Build Property File">
+    <description>Build Property File</description>
     <properties>
-      <property name="filePath" required="true">
-        <property-ui type="textBox"
-                     label="File path"
-                     description="The full path to the text file to be edited."/>
-      </property>
-	  <property name="searchString" required="true">
-        <property-ui type="textAreaBox"
-                     label="Search string"
-                     description="The string that the plugin will search for."/>
-      </property>
-	  <property name="replacementString" required="true">
-        <property-ui type="textAreaBox"
-                     label="Replacement string"
-                     description="The string that the plugin will replace all occurances of the search string with."/>
-	  </property>
-    </properties>
+		<property name="sourcedir" required="true">
+			<property-ui type="textBox"
+						 label="Source Directory"
+						 description="The path to start importing property files (.properties) from.  All subdirectories will be searched."/>
+		</property>
+        <property name="includes" required="true">
+			<property-ui type="textAreaBox"
+						label="Property File(s) to include"
+						description="A newline separated list of property files to include in the build."/>
+		</property>		
+		<property name="targetfilename" required="true">
+			<property-ui type="textBox"
+						 label="Export File"
+						 description="The path to export the resource properties file to."/>
+		</property>
+		<property name="extension">
+			<property-ui type="textBox" 
+						 default-value=".properties" 
+						 label="Property File Extension"
+						 description="The file extension for the property files." 
+						 hidden="true"/>
+		</property>
+	</properties>
     <post-processing><![CDATA[
         if (properties.get("exitCode") != 0) {
             properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
@@ -69,75 +110,95 @@
      ]]></post-processing>
     <command program="${GROOVY_HOME}/bin/groovy">
       <arg value="-cp"/>
-      <arg path="classes"/>
-      <arg file="search_and_replace_with_regex.groovy"/>
-      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg path="classes:lib/CommonsUtil.jar"/>
+      <arg file="build_property_file.groovy"/>
+	  <arg file="${PLUGIN_INPUT_PROPS}"/>
       <arg file="${PLUGIN_OUTPUT_PROPS}"/>
     </command>
   </step-type>
-  <step-type name="Append text to a file">
-    <description>Appends a specific string to the end of a file</description>
+  
+  <!-- ==================================== -->
+  <!--   Read Properties From Property File -->
+  <!-- ==================================== -->
+  <step-type name="Read Properties From Property File">
+    <description>Parse a Property file to retrieve properties defined by key names</description>
     <properties>
-      <property name="filePath" required="true">
+      <property name="dirOffset">
         <property-ui type="textBox"
-                     label="File path"
-                     description="The full path to the text file to be edited."/>
+                     label="Directory Offset"
+                     description="A sub-directory of the current working directory where the step should execute."/>
       </property>
-	  <property name="text" required="true">
+      <property name="includes" required="true">
+        <property-ui type="textBox"
+                     label="Property File"
+                     description="The full path to the property file to read properties from."/>
+      </property>
+      <property name="propertyKeys" required="true">
         <property-ui type="textAreaBox"
-                     label="Text"
-                     description="The text to be appended to the file."/>
+                     label="Property Keys"
+                     description="A newline separated list of elements whose value will be retrieved for the property. 
+                     For example, the value matching the key in a key-value pair"/>
       </property>
-	  <property name="startOnNewLine">
+      <property name="failWithoutMatch">
         <property-ui type="checkBox"
-                     label="Start on new line?"
-                     description="If true, add a new line before the text string."/>
+                     label="Fail if no match found"
+                     description="Select here if you want the step to fail if any of the keys do not return a match."/>
       </property>
-	</properties>
-    <post-processing><![CDATA[
-        if (properties.get("exitCode") != 0) {
-            properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
-        }
-        else {
-            properties.put("Status", "Success");
-        }
-     ]]></post-processing>
-    <command program="${GROOVY_HOME}/bin/groovy">
-      <arg value="-cp"/>
-      <arg path="classes"/>
-      <arg file="append_text.groovy"/>
-      <arg file="${PLUGIN_INPUT_PROPS}"/>
-      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
-    </command>
-  </step-type>
-  <step-type name="Check file contains string">
-    <description>Check if a file contains the specified string</description>
+    </properties>
+    <post-processing>
+      <![CDATA[
+                if (properties.get("exitCode") != 0) {
+              properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
+          }
+          else {
+              properties.put("Status", "Success");
+          }
+       ]]>
+           </post-processing>
+
+        <command program="${GROOVY_HOME}/bin/groovy">
+          <arg value="-cp" />
+          <arg path="classes:" />
+          <arg file="read_properties_from_file.groovy" />
+          <arg file="${PLUGIN_INPUT_PROPS}"/>
+          <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+        </command>
+    </step-type>
+	
+  <!-- ======================================== -->
+  <!--   Read All Properties From Property File -->
+  <!-- ======================================== -->
+  <step-type name="Read All Properties From Property File">
+    <description>Parse a Property file to retrieve all properties defined by key names</description>
     <properties>
-      <property name="filePath" required="true">
+      <property name="dirOffset">
         <property-ui type="textBox"
-                     label="File path"
-                     description="The full path to the text file to be searched."/>
+                     label="Directory Offset"
+                     description="A sub-directory of the current working directory where the step should execute."/>
       </property>
-	  <property name="searchString" required="true">
-        <property-ui type="textAreaBox"
-                     label="Search String"
-                     description="The string that the process will look for."/>
+      <property name="includes" required="true">
+        <property-ui type="textBox"
+                     label="Property File"
+                     description="The full path to the property file to read properties from."/>
       </property>
-	</properties>
-    <post-processing><![CDATA[
-        if (properties.get("exitCode") != 0) {
-            properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
-        }
-        else {
-            properties.put("Status", "Success");
-        }
-     ]]></post-processing>
-    <command program="${GROOVY_HOME}/bin/groovy">
-      <arg value="-cp"/>
-      <arg path="classes"/>
-      <arg file="check_text_exists.groovy"/>
-      <arg file="${PLUGIN_INPUT_PROPS}"/>
-      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
-    </command>
-  </step-type>
+    </properties>
+    <post-processing>
+      <![CDATA[
+                if (properties.get("exitCode") != 0) {
+              properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
+          }
+          else {
+              properties.put("Status", "Success");
+          }
+       ]]>
+           </post-processing>
+
+        <command program="${GROOVY_HOME}/bin/groovy">
+          <arg value="-cp" />
+          <arg path="classes:" />
+          <arg file="read_all_properties_from_file.groovy" />
+          <arg file="${PLUGIN_INPUT_PROPS}"/>
+          <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+        </command>
+    </step-type>	
 </plugin>

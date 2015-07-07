@@ -1,19 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-- Licensed Materials - Property of IBM Corp.
-- IBM UrbanCode Build
-- IBM UrbanCode Deploy
-- IBM UrbanCode Release
-- IBM AnthillPro
-- (c) Copyright IBM Corporation 2002, 2013. All Rights Reserved.
--
-- U.S. Government Users Restricted Rights - Use, duplication or disclosure restricted by
-- GSA ADP Schedule Contract with IBM Corp.
--->
 <plugin-upgrade
         xmlns="http://www.urbancode.com/UpgradeXMLSchema_v1"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	<migrate to-version="2">
-	  <migrate-command name="Append text to a file"/>
-	</migrate>
+		
+    <migrate to-version="2">
+      <migrate-command name="Export Resource Properties"/>
+    </migrate>
+	<migrate to-version="3">
+      <migrate-command name="Read Properties From Property File"/>
+    </migrate>	
+	<migrate to-version="4">
+      <migrate-command name="Build Property File"/>
+    </migrate>
+    <migrate to-version="5">
+      <migrate-command name="Export Properties From UCD"/>
+    </migrate>	
+    <migrate to-version="6">
+      <migrate-command name="Export Properties From UCD"/>
+    </migrate>
+	<migrate to-version="7">
+      <migrate-command name="Read All Properties From Property File"/>
+    </migrate>		
+	<migrate to-version="8">
+      <migrate-command name="Build Property File"/>
+    </migrate>
+	
 </plugin-upgrade>
