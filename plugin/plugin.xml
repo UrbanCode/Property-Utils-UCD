@@ -1,17 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<plugin xmlns="http://www.urbancode.com/PluginXMLSchema_v1" 
+<!--
+ - © Copyright IBM Corporation 2014, 2016.
+ - This is licensed under the following license.
+ - The Eclipse Public 1.0 License (http://www.eclipse.org/legal/epl-v10.html)
+ - U.S. Government Users Restricted Rights:  Use, duplication or disclosure restricted by GSA ADP Schedule Contract with IBM Corp.
+-->
+
+<plugin xmlns="http://www.urbancode.com/PluginXMLSchema_v1"
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <header>
-    <identifier id="com.urbancode.air.plugin.PropertyTools" name="Property Tools" version="8"/>
+    <identifier id="com.urbancode.air.plugin.PropertyTools" name="Property Tools" version="9"/>
     <description>
 		The Property Tools plugin is an automation based plugin that provides steps for collecting Urban Code properties.
 	</description>
     <tag>Resource Tools/Property Tools</tag>
   </header>
-  
+
   <!-- ==================================== -->
   <!--   Export Properties From UCD		    -->
-  <!-- ==================================== -->  
+  <!-- ==================================== -->
   <step-type name="Export Properties From UCD">
     <description>Export Properties From UCD</description>
     <properties>
@@ -19,40 +26,40 @@
 			<property-ui type="textBox"
 						 label="Application"
 						 description="The application to export properties from.  All environment and resource properties under the application will be exported."/>
-		</property>			
+		</property>
 		<property name="exportLocation" required="true">
 			<property-ui type="textBox"
 						 label="Export Location"
 						 description="The path to export the property files to."/>
 		</property>
 		<property name="ucdhost">
-			<property-ui type="textBox" 
-						 default-value="${p?:resource/ucd.host}" 
+			<property-ui type="textBox"
+						 default-value="${p?:resource/ucd.host}"
 						 label="UCD Host"
-						 description="Hostname of the UCD server to connect to." 
+						 description="Hostname of the UCD server to connect to."
 						 hidden="true"/>
 		</property>
 		<property name="ucdport">
-			<property-ui type="textBox" 
-						 default-value="${p?:resource/ucd.port}" 
+			<property-ui type="textBox"
+						 default-value="${p?:resource/ucd.port}"
 						 label="UCD Port"
-						 description="Port number of the UCD server to connect to." 
+						 description="Port number of the UCD server to connect to."
 						 hidden="true"/>
-		</property>	
+		</property>
 		<property name="ucdusername">
-			<property-ui type="textBox" 
-						 default-value="${p?:resource/ucd.username}" 
+			<property-ui type="textBox"
+						 default-value="${p?:resource/ucd.username}"
 						 label="UCD Username"
-						 description="User name for connection to UCD server." 
+						 description="User name for connection to UCD server."
 						 hidden="true"/>
 		</property>
 		<property name="ucdpassword">
-			<property-ui type="secureBox" 
-						 default-value="${p?:resource/ucd.password}" 
+			<property-ui type="secureBox"
+						 default-value="${p?:resource/ucd.password}"
 						 label="UCD Password"
-						 description="Password for connection to UCD server." 
+						 description="Password for connection to UCD server."
 						 hidden="true"/>
-		</property>			
+		</property>
 	</properties>
     <post-processing><![CDATA[
         if (properties.get("exitCode") != 0) {
@@ -64,7 +71,7 @@
      ]]></post-processing>
     <command program="${GROOVY_HOME}/bin/groovy">
       <arg value="-cp"/>
-      <arg path="classes:lib/CommonsUtil.jar:lib/http-builder-0.7.2.jar:lib/httpcore-4.3.2.jar:lib/httpclient-4.2.5.jar:lib/json-lib.jar:lib/apache-collections-commons-collections-3.1.jar:lib/xml-resolver-1.2.jar"/>
+      <arg path="classes:lib/http-builder-0.7.1.jar:lib/httpclient-4.2.5.jar:lib/httpcore-4.3.2.jar:lib/json-lib-2.3-jdk15.jar:lib/xml-resolver-1.2.jar:lib/commons-collections-3.1.jar:lib/groovy-plugin-utils-1.0.jar"/>
       <arg file="export_properties_from_ucd.groovy"/>
 	  <arg file="${PLUGIN_INPUT_PROPS}"/>
       <arg file="${PLUGIN_OUTPUT_PROPS}"/>
@@ -73,7 +80,7 @@
 
   <!-- ==================================== -->
   <!--   Build Property File     		    -->
-  <!-- ==================================== -->  
+  <!-- ==================================== -->
   <step-type name="Build Property File">
     <description>Build Property File</description>
     <properties>
@@ -86,17 +93,17 @@
 			<property-ui type="textAreaBox"
 						label="Property File(s) to include"
 						description="A newline separated list of property files to include in the build."/>
-		</property>		
+		</property>
 		<property name="targetfilename" required="true">
 			<property-ui type="textBox"
 						 label="Export File"
 						 description="The path to export the resource properties file to."/>
 		</property>
 		<property name="extension">
-			<property-ui type="textBox" 
-						 default-value=".properties" 
+			<property-ui type="textBox"
+						 default-value=".properties"
 						 label="Property File Extension"
-						 description="The file extension for the property files." 
+						 description="The file extension for the property files."
 						 hidden="true"/>
 		</property>
 	</properties>
@@ -110,13 +117,13 @@
      ]]></post-processing>
     <command program="${GROOVY_HOME}/bin/groovy">
       <arg value="-cp"/>
-      <arg path="classes:lib/CommonsUtil.jar"/>
+      <arg path="classes:lib/groovy-plugin-utils-1.0.jar"/>
       <arg file="build_property_file.groovy"/>
 	  <arg file="${PLUGIN_INPUT_PROPS}"/>
       <arg file="${PLUGIN_OUTPUT_PROPS}"/>
     </command>
   </step-type>
-  
+
   <!-- ==================================== -->
   <!--   Read Properties From Property File -->
   <!-- ==================================== -->
@@ -136,7 +143,7 @@
       <property name="propertyKeys" required="true">
         <property-ui type="textAreaBox"
                      label="Property Keys"
-                     description="A newline separated list of elements whose value will be retrieved for the property. 
+                     description="A newline separated list of elements whose value will be retrieved for the property.
                      For example, the value matching the key in a key-value pair"/>
       </property>
       <property name="failWithoutMatch">
@@ -158,13 +165,13 @@
 
         <command program="${GROOVY_HOME}/bin/groovy">
           <arg value="-cp" />
-          <arg path="classes:" />
+          <arg path="classes:lib/groovy-plugin-utils-1.0.jar" />
           <arg file="read_properties_from_file.groovy" />
           <arg file="${PLUGIN_INPUT_PROPS}"/>
           <arg file="${PLUGIN_OUTPUT_PROPS}"/>
         </command>
     </step-type>
-	
+
   <!-- ======================================== -->
   <!--   Read All Properties From Property File -->
   <!-- ======================================== -->
@@ -195,10 +202,10 @@
 
         <command program="${GROOVY_HOME}/bin/groovy">
           <arg value="-cp" />
-          <arg path="classes:" />
+          <arg path="classes:lib/groovy-plugin-utils-1.0.jar" />
           <arg file="read_all_properties_from_file.groovy" />
           <arg file="${PLUGIN_INPUT_PROPS}"/>
           <arg file="${PLUGIN_OUTPUT_PROPS}"/>
         </command>
-    </step-type>	
+    </step-type>
 </plugin>
