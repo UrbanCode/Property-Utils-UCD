@@ -13,7 +13,7 @@ final def airTool = new AirPluginTool(args[0], args[1])
 final def stepProps = airTool.getStepProperties()
 
 //Properties to declare variables from user input
-final def dirOffset = stepProps['dirOffset']
+def dirOffset = stepProps['dirOffset']
 final def propertyFilePath = stepProps['includes']
 
 if (!dirOffset) {
