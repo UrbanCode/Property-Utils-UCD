@@ -8,23 +8,23 @@
 import com.urbancode.air.AirPluginTool
 
 //Default to declare step properties and location
-final def workDir = new File('.').canonicalFile
-final def airTool = new AirPluginTool(args[0], args[1])
-final def stepProps = airTool.getStepProperties()
+def workDir = new File('.').canonicalFile
+def airTool = new AirPluginTool(args[0], args[1])
+def stepProps = airTool.getStepProperties()
 
 //Properties to declare variables from user input
 def dirOffset = stepProps['dirOffset']
-final def propertyKeys = stepProps['propertyKeys'].split("\n") as List
-final def failWithoutMatch = stepProps['failWithoutMatch'].toBoolean()
+def propertyKeys = stepProps['propertyKeys'].split("\n") as List
+def failWithoutMatch = stepProps['failWithoutMatch'].toBoolean()
 
 if (!dirOffset) {
     dirOffset = '.'
 }
 
 //Properties for the processing of the property file
-final def propertyFileLoaded = new Properties();
-final def propertyFilePath = stepProps['includes']
-final def propertyFile = new File(propertyFilePath);
+def propertyFileLoaded = new Properties();
+def propertyFilePath = stepProps['includes']
+def propertyFile = new File(propertyFilePath);
 try {
     propertyStream = new FileInputStream(propertyFile);
     propertyFileLoaded.load(propertyStream);

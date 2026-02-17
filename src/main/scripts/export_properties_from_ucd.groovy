@@ -22,11 +22,11 @@ def ucdport = props['ucdport'] != "" ? props['ucdport'] : null
 def ucdusername = props['ucdusername'] != "" ? props['ucdusername'] : null
 def ucdpassword = props['ucdpassword'] != "" ? props['ucdpassword'] : null
 
-final File PLUGIN_HOME = new File(System.getenv().get("PLUGIN_HOME"))
+File PLUGIN_HOME = new File(System.getenv().get("PLUGIN_HOME"))
 
 //
 
-final def invokeHttp(String url, String username, String password) {
+def invokeHttp(String url, String username, String password) {
 
     def http = new HTTPBuilder(url)
 
@@ -46,7 +46,7 @@ final def invokeHttp(String url, String username, String password) {
     }
 }
 
-final def getResourceName(String resource) {
+def getResourceName(String resource) {
 
     def lastSlash = -1
     for (int i=resource.length()-1; i >= 0; i--) {
@@ -64,7 +64,7 @@ final def getResourceName(String resource) {
     }
 }
 
-final def getResourceProperties(String app, String env, String branch, String exportLocation, String host, String port, String username, String password) {
+def getResourceProperties(String app, String env, String branch, String exportLocation, String host, String port, String username, String password) {
 
     def resourcename = getResourceName(branch)
     if (resourcename != "") {
@@ -81,7 +81,7 @@ final def getResourceProperties(String app, String env, String branch, String ex
     }
 }
 
-final def getResource(String app, String env, String branch, String exportLocation, String host, String port, String username, String password) {
+def getResource(String app, String env, String branch, String exportLocation, String host, String port, String username, String password) {
 
     println 'Processing resource: ' + branch
 
@@ -97,7 +97,7 @@ final def getResource(String app, String env, String branch, String exportLocati
     }
 }
 
-final def getEnvironmentProperties(String app, String env, String exportLocation, String host, String port, String username, String password) {
+def getEnvironmentProperties(String app, String env, String exportLocation, String host, String port, String username, String password) {
 
     def url = host + ':' + port + '/cli/environment/getProperties?environment=' + env + "&application=" + app
     def json = invokeHttp(url, username, password)
@@ -113,7 +113,7 @@ final def getEnvironmentProperties(String app, String env, String exportLocation
     }
 }
 
-final def getEnvironment(String app, String env, String exportLocation, String host, String port, String username, String password) {
+def getEnvironment(String app, String env, String exportLocation, String host, String port, String username, String password) {
 
     println 'Processing environment: ' + env
 
@@ -127,7 +127,7 @@ final def getEnvironment(String app, String env, String exportLocation, String h
     }
 }
 
-final def getApplicationProperties(String app, String exportLocation, String host, String port, String username, String password) {
+def getApplicationProperties(String app, String exportLocation, String host, String port, String username, String password) {
 
     def url = host + ':' + port + '/cli/application/getProperties?application=' + app
     def json = invokeHttp(url, username, password)
@@ -143,7 +143,7 @@ final def getApplicationProperties(String app, String exportLocation, String hos
     }
 }
 
-final def getApplication(String app, String exportLocation, String host, String port, String username, String password) {
+def getApplication(String app, String exportLocation, String host, String port, String username, String password) {
 
     println 'Processing application: ' + app
 
