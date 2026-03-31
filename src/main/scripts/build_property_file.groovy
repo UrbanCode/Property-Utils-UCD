@@ -17,7 +17,7 @@ def includes = props['includes'] != "" ? props['includes'] : null
 def targetfilename = props['targetfilename'] != "" ? props['targetfilename'] : null
 def extension = props['extension'] != "" ? props['extension'] : null
 
-final File PLUGIN_HOME = new File(System.getenv().get("PLUGIN_HOME"))
+File PLUGIN_HOME = new File(System.getenv().get("PLUGIN_HOME"))
 
 //
 
